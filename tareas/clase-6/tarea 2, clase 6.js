@@ -4,30 +4,27 @@ document.querySelector('#agregar').onclick = function () {
 }
 
 document.querySelector('#quitar').onclick = function () {
-    quitarMiembro ();  
+    quitarMiembro();  
     return false;
 }
 
 document.querySelector('#calcular').onclick = function () {
-    document.querySelector('#mayor-salario-anual').textContent = mayorSalarioAnual ();
-    document.querySelector('#menor-salario-anual').textContent =   menorSalarioAnual ();
-    document.querySelector('#salario-anual-promedio').textContent = salarioAnualPromedio ();
-    document.querySelector('#salario-mensual-promedio').textContent = salarioMensualPromedio ();
+    document.querySelector('#mayor-salario-anual').textContent = calcularMayorSalarioAnual ();
+    document.querySelector('#menor-salario-anual').textContent = calcularMenorSalarioAnual ();
+    document.querySelector('#salario-anual-promedio').textContent = calcularSalarioAnualPromedio ();
+    document.querySelector('#salario-mensual-promedio').textContent = calcularSalarioMensualPromedio ();
 }
 
 
 function agregarMiembro() {
 
-    let contador = 1;
-    for (i = 0; i < document.querySelectorAll('.integrante').length; i++) {
-        contador += 1;
-    }
+    let indice = Number(document.querySelectorAll('.integrante').length) + 1;
 
     const div = document.createElement('div');
     div.className = 'integrante';
 
     const label = document.createElement('label');
-    label.textContent = "Salario Anual del integrante Nro: " + contador; 
+    label.textContent = 'Salario Anual del integrante Nro: ' + indice; 
 
     const input = document.createElement('input');
     input.type = 'number';
@@ -40,14 +37,14 @@ function agregarMiembro() {
 
 }
 
-function quitarMiembro () {
+function quitarMiembro() {
     let miembrosaEliminar = document.querySelector('#miembros-familia');
     let elementoEliminar = document.querySelectorAll('.integrante');
     miembrosaEliminar.removeChild(elementoEliminar[elementoEliminar.length-1]);
 
 }
 
-function sacarSalarios () {
+function obtenerSalarios() {
     const salariosInputs = document.querySelectorAll('.integrante input');
     const salariosMiembros = [];
     for (i = 0; i < salariosInputs.length; i++) {
@@ -60,20 +57,30 @@ function sacarSalarios () {
     return salariosMiembros;
 }
 
-function mayorSalarioAnual () {
-    let salarios = sacarSalarios();
-    let resultadoMayorSalarioAnual = Math.max(...salarios);
-    return resultadoMayorSalarioAnual;
+function calcularMayorSalarioAnual() {
+    let salarios = obtenerSalarios();
+    let mayorNumero = salarios[0];
+    for (i = 1; i > salarios.length; i++){
+        if (salarios[i] > mayorNumero) {
+            mayorNumero = salarios[i];
+        }
+    }
+    return mayorNumero;
 }
 
-function menorSalarioAnual () {
-    let salarios = sacarSalarios ();
-    let resultadoMenorSalarioAnual = Math.min(...salarios);
-    return resultadoMenorSalarioAnual;
+function calcularMenorSalarioAnual() {
+    let salarios = obtenerSalarios();
+    let menorNumero = salarios[0];
+    for (i = 1; i < salarios.length; i++) {
+        if (salarios[i] < menorNumero) {
+            menorNumero = salarios[i];
+        }
+    }
+    return menorNumero;
 }
 
-function salarioAnualPromedio () {
-    let salarios = sacarSalarios ();
+function calcularSalarioAnualPromedio() {
+    let salarios = obtenerSalarios();
     let sumaSalarios = 0;
     for (i = 0; i < salarios.length; i++) {
         sumaSalarios += salarios[i];
@@ -81,8 +88,8 @@ function salarioAnualPromedio () {
     return sumaSalarios/ salarios.length;
 }
 
-function salarioMensualPromedio () {
-    let salarios = sacarSalarios ();
+function calcularSalarioMensualPromedio() {
+    let salarios = obtenerSalarios();
     let sumaSalarios = 0;
     let salarioMensualPromedio = 0;
     for (i = 0; i < salarios.length; i++) {
